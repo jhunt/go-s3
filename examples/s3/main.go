@@ -32,11 +32,11 @@ func main() {
 		reg = "us-east-1"
 	}
 
-	if len(os.Args) != 1 {
+	if len(os.Args) != 2 {
 		fmt.Fprintf(os.Stderr, "USAGE: s3 path/in/bucket <file >out\n")
 		os.Exit(1)
 	}
-	path := os.Args[0]
+	path := os.Args[1]
 
 	c, err := s3.NewClient(&s3.Client{
 		AccessKeyID:     aki,
