@@ -4,6 +4,7 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
+	"golang.org/x/net/proxy"
 	"net/http"
 )
 
@@ -14,6 +15,7 @@ type Client struct {
 	Bucket          string
 	Domain          string
 	Protocol        string
+	SOCKS5Proxy     string
 
 	CACertificates     []string
 	SkipSystemCAs      bool
@@ -43,8 +45,18 @@ func NewClient(c *Client) (*Client, error) {
 		}
 	}
 
+	dial := http.DefaultTransport.(*http.Transport).Dial
+	if c.SOCKS5Proxy != "" {
+		dialer, err := proxy.SOCKS5("tcp", c.SOCKS5Proxy, nil, proxy.Direct)
+		if err != nil {
+			return nil, err
+		}
+		dial = dialer.Dial
+	}
+
 	c.ua = &http.Client{
 		Transport: &http.Transport{
+			Dial:  dial,
 			Proxy: http.ProxyFromEnvironment,
 			TLSClientConfig: &tls.Config{
 				RootCAs:            roots,

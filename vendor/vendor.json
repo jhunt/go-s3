@@ -1,0 +1,13 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "r9l4r3H6FOLQ0c2JaoXpopFjpnw=",
+			"path": "golang.org/x/net/proxy",
+			"revision": "6921abc35dffd00438a0c020584ce560108737ea",
+			"revisionTime": "2017-11-28T09:45:08Z"
+		}
+	],
+	"rootPath": "github.com/jhunt/go-s3"
+}
