@@ -47,3 +47,7 @@ func (c *Client) put(path string, payload []byte) (*http.Response, error) {
 func (c *Client) get(path string) (*http.Response, error) {
 	return c.request("GET", path, nil)
 }
+
+func (c *Client) delete(path string) (*http.Response, error) {
+	return c.request("DELETE", path, nil)
+}

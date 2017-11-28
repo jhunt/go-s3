@@ -76,5 +76,11 @@ func main() {
 	}
 	io.Copy(os.Stdout, out)
 
+	err = c.Delete(path)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "!!! unable to remove our uploaded file: %s\n", err)
+		os.Exit(1)
+	}
+
 	os.Exit(0)
 }
