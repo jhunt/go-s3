@@ -32,6 +32,11 @@ func main() {
 		reg = "us-east-1"
 	}
 
+	sigv := 4
+	if os.Getenv("S3_SIGV2") != "" {
+		sigv = 2
+	}
+
 	if len(os.Args) != 2 {
 		fmt.Fprintf(os.Stderr, "USAGE: s3 path/in/bucket <file >out\n")
 		os.Exit(1)
@@ -39,10 +44,11 @@ func main() {
 	path := os.Args[1]
 
 	c, err := s3.NewClient(&s3.Client{
-		AccessKeyID:     aki,
-		SecretAccessKey: key,
-		Region:          reg,
-		Bucket:          bkt,
+		AccessKeyID:      aki,
+		SecretAccessKey:  key,
+		Region:           reg,
+		Bucket:           bkt,
+		SignatureVersion: sigv,
 	})
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "!!! unable to configure s3 client: %s\n", err)

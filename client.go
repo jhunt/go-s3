@@ -17,6 +17,8 @@ type Client struct {
 	Protocol        string
 	SOCKS5Proxy     string
 
+	SignatureVersion int
+
 	CACertificates     []string
 	SkipSystemCAs      bool
 	InsecureSkipVerify bool
@@ -29,6 +31,10 @@ func NewClient(c *Client) (*Client, error) {
 		roots *x509.CertPool
 		err   error
 	)
+
+	if c.SignatureVersion == 0 {
+		c.SignatureVersion = 4
+	}
 
 	if !c.SkipSystemCAs {
 		roots, err = x509.SystemCertPool()
