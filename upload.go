@@ -36,7 +36,7 @@ func (c *Client) NewUpload(path string) (*Upload, error) {
 	}
 
 	if res.StatusCode != 200 {
-		return nil, ResponseError(b)
+		return nil, ResponseErrorFrom(b)
 	}
 
 	var payload struct {
@@ -97,11 +97,7 @@ func (u *Upload) Done() error {
 		return err
 	}
 	if res.StatusCode != 200 {
-		b, err = ioutil.ReadAll(res.Body)
-		if err != nil {
-			return err
-		}
-		return ResponseError(b)
+		return ResponseError(res)
 	}
 	return nil
 }

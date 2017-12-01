@@ -2,7 +2,6 @@ package s3
 
 import (
 	"io"
-	"io/ioutil"
 )
 
 func (c *Client) Get(key string) (io.Reader, error) {
@@ -12,11 +11,7 @@ func (c *Client) Get(key string) (io.Reader, error) {
 	}
 
 	if res.StatusCode != 200 {
-		b, err := ioutil.ReadAll(res.Body)
-		if err != nil {
-			return nil, err
-		}
-		return nil, ResponseError(b)
+		return nil, ResponseError(res)
 	}
 
 	return res.Body, nil
