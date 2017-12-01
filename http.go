@@ -29,8 +29,19 @@ func (c *Client) request(method, path string, payload []byte) (*http.Response, e
 	req.ContentLength = int64(len(payload))
 	req.Header.Set("Authorization", c.signature(req, payload))
 
+	/* optional debugging */
+	if err := c.traceRequest(req); err != nil {
+		return nil, err
+	}
+
+	/* submit the request */
 	res, err := c.ua.Do(req)
 	if err != nil {
+		return nil, err
+	}
+
+	/* optional debugging */
+	if err := c.traceResponse(res); err != nil {
 		return nil, err
 	}
 	return res, nil
