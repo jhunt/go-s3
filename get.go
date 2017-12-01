@@ -5,7 +5,7 @@ import (
 )
 
 func (c *Client) Get(key string) (io.Reader, error) {
-	res, err := c.get(key)
+	res, err := c.get(key, nil)
 	if err != nil {
 		return nil, err
 	}

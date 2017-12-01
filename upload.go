@@ -25,7 +25,7 @@ type Upload struct {
 }
 
 func (c *Client) NewUpload(path string) (*Upload, error) {
-	res, err := c.post(path+"?uploads", nil)
+	res, err := c.post(path+"?uploads", nil, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +67,7 @@ func (u *Upload) Write(b []byte) error {
 		return fmt.Errorf("S3 limits the number of multipart upload segments to 10k")
 	}
 
-	res, err := u.c.put(fmt.Sprintf("%s?partNumber=%d&uploadId=%s", u.path, u.n, u.id), b)
+	res, err := u.c.put(fmt.Sprintf("%s?partNumber=%d&uploadId=%s", u.path, u.n, u.id), b, nil)
 	if err != nil {
 		return err
 	}
@@ -92,7 +92,7 @@ func (u *Upload) Done() error {
 		return err
 	}
 
-	res, err := u.c.post(fmt.Sprintf("%s?uploadId=%s", u.path, u.id), b)
+	res, err := u.c.post(fmt.Sprintf("%s?uploadId=%s", u.path, u.id), b, nil)
 	if err != nil {
 		return err
 	}
