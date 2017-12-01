@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"net/http"
+	"regexp"
 )
 
 func (c *Client) url(path string) string {
@@ -37,6 +38,9 @@ func (c *Client) request(method, path string, payload []byte, headers *http.Head
 	/* sign the request */
 	req.ContentLength = int64(len(payload))
 	req.Header.Set("Authorization", c.signature(req, payload))
+
+	/* stupid continuation tokens sometimes have literal +'s in them */
+	req.URL.RawQuery = regexp.MustCompile(`\+`).ReplaceAllString(req.URL.RawQuery, "%2B")
 
 	/* optional debugging */
 	if err := c.traceRequest(req); err != nil {
