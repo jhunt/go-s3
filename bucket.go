@@ -10,7 +10,7 @@ import (
 const (
 	PrivateACL                = "private"
 	PublicReadACL             = "public-read"
-	PublicReadWriteACL        = "public-read=write"
+	PublicReadWriteACL        = "public-read-write"
 	AWSExecReadACL            = "aws-exec-read"
 	AuthenticatedReadACL      = "authenticated-read"
 	BucketOwnerReadACL        = "bucket-owner-read"
