@@ -4,11 +4,8 @@ import (
 	"encoding/xml"
 	"fmt"
 	"io/ioutil"
+	"time"
 )
-
-type Object struct {
-	Key string
-}
 
 func (c *Client) List() ([]Object, error) {
 	objects := make([]Object, 0)
@@ -23,7 +20,15 @@ func (c *Client) List() ([]Object, error) {
 			XMLName  xml.Name `xml:"ListBucketResult"`
 			Next     string   `xml:"NextContinuationToken"`
 			Contents []struct {
-				Key string `xml:"Key"`
+				Key          string `xml:"Key"`
+				LastModified string `xml:"LastModified"`
+				ETag         string `xml:"ETag"`
+				Size         int64  `xml:"Size"`
+				StorageClass string `xml:"StorageClass"`
+				Owner        struct {
+					ID          string `xml:"ID"`
+					DisplayName string `xml:"DisplayName"`
+				} `xml:"Owner"`
 			} `xml:"Contents"`
 		}
 		b, err := ioutil.ReadAll(res.Body)
@@ -41,8 +46,15 @@ func (c *Client) List() ([]Object, error) {
 		}
 
 		for _, f := range r.Contents {
+			mod, _ := time.Parse("2006-01-02T15:04:05.000Z", f.LastModified)
 			objects = append(objects, Object{
-				Key: f.Key,
+				Key:          f.Key,
+				LastModified: mod,
+				ETag:         f.ETag[1 : len(f.ETag)-1],
+				Size:         Bytes(f.Size),
+				StorageClass: f.StorageClass,
+				OwnerID:      f.Owner.ID,
+				OwnerName:    f.Owner.DisplayName,
 			})
 		}
 
