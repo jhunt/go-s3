@@ -103,7 +103,7 @@ func (u *Upload) Done() error {
 }
 
 func (u *Upload) Stream(in io.Reader, block int) (int64, error) {
-	if block < 5*1024*1024*1024 {
+	if block < 5*1024*1024 {
 		return 0, fmt.Errorf("S3 requires block sizes of 5MB or higher")
 	}
 
