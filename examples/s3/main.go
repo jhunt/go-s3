@@ -49,6 +49,7 @@ func main() {
 		Region:           reg,
 		Bucket:           bkt,
 		SignatureVersion: sigv,
+		UsePathBuckets:   os.Getenv("S3_PATH_BUCKET") != "",
 	})
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "!!! unable to configure s3 client: %s\n", err)
