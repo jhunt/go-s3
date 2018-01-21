@@ -100,10 +100,3 @@ func (c *Client) domain() string {
 	}
 	return c.Domain
 }
-
-func (c *Client) bucket() string {
-	if c.Bucket == "" {
-		panic("no bucket specified.")
-	}
-	return c.Bucket
-}
