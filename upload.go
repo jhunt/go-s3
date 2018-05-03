@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"net/http"
 )
 
 type xmlpart struct {
@@ -13,8 +14,7 @@ type xmlpart struct {
 }
 
 type Upload struct {
-	Key string
-
+	Key  string
 	c    *Client
 	n    int
 	id   string
@@ -24,8 +24,8 @@ type Upload struct {
 	parts []xmlpart
 }
 
-func (c *Client) NewUpload(path string) (*Upload, error) {
-	res, err := c.post(path+"?uploads", nil, nil)
+func (c *Client) NewUpload(path string, headers *http.Header) (*Upload, error) {
+	res, err := c.post(path+"?uploads", nil, headers)
 	if err != nil {
 		return nil, err
 	}
