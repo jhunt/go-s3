@@ -86,6 +86,9 @@ func (c *Client) v2signature(req *http.Request, raw []byte) string {
 
 	req.Header.Set("x-amz-date", now.Format("20060102T150405Z"))
 	req.Header.Set("host", regexp.MustCompile(`:.*`).ReplaceAllString(req.URL.Host, ""))
+	if c.Token != "" {
+		req.Header.Set("X-Amz-Security-Token", c.Token)
+	}
 	//req.Header.Set("host", "go-s3-bd6cf051-8023-4d2b-8bf2-7aaa477862ea.s3.amazonaws.com")
 
 	h := hmac.New(sha1.New, []byte(c.SecretAccessKey))
@@ -164,6 +167,9 @@ func (c *Client) v4signature(req *http.Request, raw []byte) string {
 	scope := fmt.Sprintf("%s/%s/s3/aws4_request", yyyymmdd, c.Region)
 	req.Header.Set("x-amz-date", now.Format("20060102T150405Z"))
 	req.Header.Set("host", regexp.MustCompile(`:.*`).ReplaceAllString(req.URL.Host, ""))
+	if c.Token != "" {
+		req.Header.Set("X-Amz-Security-Token", c.Token)
+	}
 	//req.Header.Set("host", "go-s3-bd6cf051-8023-4d2b-8bf2-7aaa477862ea.s3.amazonaws.com")
 
 	payload := sha256.New()

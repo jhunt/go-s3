@@ -4,16 +4,18 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
-	"golang.org/x/net/proxy"
 	"io"
 	"net/http"
 	"os"
 	"strings"
+
+	"golang.org/x/net/proxy"
 )
 
 type Client struct {
 	AccessKeyID     string
 	SecretAccessKey string
+	Token           string
 	Region          string
 	Bucket          string
 	Domain          string
