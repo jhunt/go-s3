@@ -94,7 +94,6 @@ type Bucket struct {
 func (c *Client) ListBuckets() ([]Bucket, error) {
 	prev := c.Bucket
 	c.Bucket = ""
-	fmt.Fprintf(os.Stderr, "@R{listing buckets}\n")
 	res, err := c.get("/", nil)
 	c.Bucket = prev
 	if err != nil {
