@@ -69,7 +69,7 @@ func (c *Client) ChangeACL(path, acl string) error {
 	headers := make(http.Header)
 	headers.Set("x-amz-acl", acl)
 
-	res, err := c.put(path, nil, &headers)
+	res, err := c.put(path+"?acl", nil, &headers)
 	if err != nil {
 		return err
 	}
