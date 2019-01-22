@@ -71,6 +71,7 @@ func (u *Upload) Write(b []byte) error {
 	if err != nil {
 		return err
 	}
+	defer res.Body.Close()
 
 	u.parts = append(u.parts, xmlpart{
 		PartNumber: u.n,
@@ -96,6 +97,7 @@ func (u *Upload) Done() error {
 	if err != nil {
 		return err
 	}
+	defer res.Body.Close()
 	if res.StatusCode != 200 {
 		return ResponseError(res)
 	}
